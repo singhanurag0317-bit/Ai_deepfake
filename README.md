@@ -63,7 +63,7 @@ The system outputs a **probability score** (e.g., `72% — Likely AI-Generated`)
 | 🤖 **Lightweight Deepfake Detection** | Optimized pre-trained model — fast inference, no GPU required |
 | 📊 **AI Probability Score** | Clear 0–100% confidence meter — *Real* or *Synthetic* verdict |
 | 🔎 **Metadata Analysis** | EXIF forensics — flags missing camera info & timestamp anomalies |
-| 🎨 **Clean User Interface** | Designed for non-technical users. No jargon, just a clear result |
+| 🎨 **React Component UI** | Built with reusable React components — responsive, fast, and state-driven |
 | ⚡ **Fast Processing** | End-to-end pipeline completes in under 3 seconds |
 
 ---
@@ -73,7 +73,7 @@ The system outputs a **probability score** (e.g., `72% — Likely AI-Generated`)
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    LAYER 1 — FRONTEND                       │
-│         HTML / CSS / JS  ·  Upload Widget  ·  Result UI     │
+│      React.js  ·  Component UI  ·  Upload Widget  ·  Axios  │
 └─────────────────────┬───────────────────────────────────────┘
                       │  HTTP Request (multipart/form-data)
                       ▼
@@ -165,7 +165,7 @@ Python 3.10+    TensorFlow / PyTorch    OpenCV    Flask / Django    NumPy    Pil
 
 **Frontend**
 ```
-HTML5    CSS3    JavaScript
+React.js    JavaScript (ES6+)    CSS3    HTML5
 ```
 
 **ML & Data**
@@ -220,10 +220,10 @@ By project completion, DeepScan will:
 
 | Name | Role | ID |
 |---|---|---|
-| **Harshita Nagpal** | Frontend Development & UI Design | 12515990016 |
-| **Arpita Raj** | Backend Development & Image Processing | 12515990007 |
-| **Naman Singh** | Model Integration & Testing | 12515990024 |
-| **Anurag Singh** | Documentation & System Analysis | 12515990006 |
+| **Harshita Nagpal** | Frontend Development (React.js) & UI Design | 12515990016 |
+| **Arpita Raj** | Frontend Development & Image Processing | 12515990007 |
+| **Naman Singh** | Backend Development & Testing | 12515990024 |
+| **Anurag Singh** | Backend Development & System Analysis | 12515990006 |
 
 **Project Supervisor:** Mr. Abhishek Singh *(Technical Trainer)*
 **Submitted To:** Mr. Sanjay Madaan
