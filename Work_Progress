@@ -1,0 +1,17 @@
+**WORK_Progress**
+
+20/feb/2026
+Readme released.
+
+02/March/2026
+modules downloaded - frontend and backend(Nodes modules , MongoDB)
+setuping other team member's
+Postman run - checking the file sented to uploads folder and it works as first sort of it didnt work just a minor mistake uploads misrenamed as upload now issue the issue has been resolved and getting the output.
+{
+    "message": "✅ File uploaded successfully",
+    "filename": "1772451440736-photo_5970659232354863913_w.jpg",
+    "size": 476958,
+    "mimetype": "image/jpeg"
+}
+
+
