@@ -42,6 +42,10 @@ export default function Navbar() {
           >
             Try now
           </button>
+          <Link to="/contact" className="navbar__btn navbar__btn--contact">
+            <span className="navbar__btn-dot" aria-hidden="true" />
+            Get in touch
+          </Link>
         </div>
       </div>
     </header>
