@@ -35,6 +35,15 @@ Connect to MongoDB
 NO work
 
 10/march/2026
-Image implemented data
+phase -4 completed...
+ EXIF Metadata Service
+ {
+  "metadata_score": 25,
+  "flags": [
+    "Camera: Samsung Galaxy S23",
+    "Timestamp: 2025:03:10 14:22:11",
+    "GPS data present"
+  ]
+} all output get it correctly and score is showing correctly for both camera based and internet based i.e. Meta_data score = 85.
 
 
