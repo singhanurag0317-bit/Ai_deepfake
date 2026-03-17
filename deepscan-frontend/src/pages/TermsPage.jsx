@@ -7,7 +7,7 @@ export default function TermsPage() {
       <div className="page__content">
         <h1 className="page__title">Terms of Use</h1>
         <p className="page__intro">
-          By using DeepScan, you agree to these terms of service.
+          By using DeepScan (AI Deepfake Detection Platform), you agree to these terms of service.
         </p>
         <section className="page__section">
           <h2>Acceptable use</h2>

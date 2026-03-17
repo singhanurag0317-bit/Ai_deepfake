@@ -9,7 +9,7 @@ export default function FeaturesPage() {
           <p className="page-wide__kicker">Product</p>
           <h1 className="page-wide__title">Features that make results readable</h1>
           <p className="page-wide__subtitle">
-            DeepScan is designed for clarity: upload an image, get an AI probability score,
+            DeepScan (AI Deepfake Detection Platform) is designed for clarity: upload an image, get an AI probability score,
             understand the “why” with a breakdown, and review metadata signals.
           </p>
           <div className="page-wide__hero-actions">

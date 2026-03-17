@@ -9,7 +9,7 @@ export default function AboutPage() {
           <p className="about__kicker">DeepScan</p>
           <h1 className="about__title">Built for clarity in an AI-heavy world</h1>
           <p className="about__subtitle">
-            AI images are everywhere. DeepScan helps you make faster, more informed decisions by
+            AI Deepfake Detection Platform. DeepScan helps you make faster, more informed decisions by
             turning complex signals into a readable score and breakdown.
           </p>
           <div className="about__hero-actions">

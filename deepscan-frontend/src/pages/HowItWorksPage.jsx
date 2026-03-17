@@ -10,7 +10,7 @@ export default function HowItWorksPage() {
           <h1 className="how__title">How DeepScan Works</h1>
           <p className="how__subtitle">
             Upload an image, run analysis, then read an AI probability score plus the signals behind it.
-            DeepScan is built to be understandable—not just accurate.
+            DeepScan is an AI Deepfake Detection Platform built to be understandable—not just accurate.
           </p>
           <div className="how__cta-row">
             <Link to="/" className="how__btn how__btn--primary">Try it now</Link>

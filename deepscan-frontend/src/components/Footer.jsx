@@ -49,7 +49,7 @@ export default function Footer() {
         </div>
 
         <div className="footer__bottom">
-          <span className="footer__copyright">DeepScan 2026</span>
+          <span className="footer__copyright">DeepScan • AI Deepfake Detection Platform • 2026</span>
           <span className="footer__rights">All Rights Reserved</span>
         </div>
       </div>
