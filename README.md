@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=DeepScan&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=Deepfake&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -18,7 +18,7 @@
 <br/>
 
 > 💀 **Deepfakes are getting scary good.**
-> DeepScan fights back — upload any image, get a verdict in seconds.
+> Deepfake fights back — upload any image, get a verdict in seconds.
 > *Because not everything you see is real.*
 
 <br/>
@@ -38,6 +38,7 @@
 - [System Architecture](#-system-architecture)
 - [Workflow](#-workflow)
 - [Tech Stack](#-tech-stack)
+- [EXIF Metadata Scoring](#-exif-metadata-scoring)
 - [API Endpoints](#-api-endpoints)
 - [Getting Started](#-getting-started)
 - [Project Scope](#-project-scope)
@@ -49,9 +50,9 @@
 
 ## 🧠 About the Project
 
-**DeepScan** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are critical.
+**Deepfake** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are critical.
 
-DeepScan analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
+Deepfake analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
 
 | Layer | What it does |
 |---|---|
@@ -75,7 +76,7 @@ The system outputs a **probability score** (e.g., `72% — Likely Synthetic`) wi
 | 🔎 **Metadata Forensics** | EXIF parsing — flags missing camera, AI software, timestamps | ✅ Done |
 | ⚖️ **Weighted Score Fusion** | 3 signals combined into one final score intelligently | ✅ Done |
 | 🗄️ **Result Logging** | Every scan saved to MongoDB with timestamp & breakdown | ✅ Done |
-| 🎨 **React UI** | Reusable components — responsive, fast, state-driven | ⏳ Pending |
+| 🎨 **React UI** | Reusable components — responsive, fast, state-driven | ✅ Done |
 | ⚡ **Fast Pipeline** | End-to-end analysis completes in under 3 seconds | ✅ Done |
 
 ---
@@ -202,6 +203,40 @@ User Uploads Image
 
 ---
 
+## 🔬 EXIF Metadata Scoring
+
+The metadata forensics layer analyzes hidden EXIF data embedded in every real camera photo. AI-generated images typically have none of this data — making its absence a strong synthetic signal.
+
+The scoring system works as follows:
+
+```
+Base Score: 50  (neutral starting point)
+
+┌─────────────────────────────────────────────────────────────────┐
+│                     EXIF SIGNAL TABLE                          │
+├────────────────────────────┬────────────────────────────────────┤
+│  Signal                    │  Score Impact                      │
+├────────────────────────────┼────────────────────────────────────┤
+│  No EXIF data at all       │  → score = 85  (instant flag)      │
+│  No camera make/model      │  → score += 20                     │
+│  Camera make/model found   │  → score -= 20                     │
+│  AI software detected *    │  → score += 40                     │
+│  No timestamp              │  → score += 10                     │
+│  Timestamp found           │  → score -= 10                     │
+│  No GPS data               │  → score += 5                      │
+│  GPS data found            │  → score -= 10                     │
+├────────────────────────────┼────────────────────────────────────┤
+│  Final score               │  clamped between 0 and 100         │
+└────────────────────────────┴────────────────────────────────────┘
+
+* AI software detection covers:
+  Stable Diffusion · Midjourney · DALL-E · Adobe Firefly
+```
+
+> 💡 **Why metadata matters:** Real photos taken by a camera always carry EXIF — device model, timestamp, sometimes GPS. Images shared via WhatsApp or Telegram have their EXIF stripped, which can raise the metadata score even for real photos. For accurate results, upload the **original file directly** without passing it through a messaging app.
+
+---
+
 ## 📡 API Endpoints
 
 ### `POST /api/analyze`
@@ -302,9 +337,9 @@ Phase 1  ██████████  Requirement Analysis & Problem Understa
 Phase 2  ██████████  Dataset & Pre-trained Model Selection          ✅ Done
 Phase 3  ██████████  System Architecture Design                     ✅ Done
 Phase 4  ██████████  Backend Development                            ✅ Done
-Phase 5  ░░░░░░░░░░  Frontend Development                           ⏳ Pending
-Phase 6  ░░░░░░░░░░  Frontend–Backend Integration                   ⏳ Pending
-Phase 7  ░░░░░░░░░░  Testing & Performance Evaluation               ⏳ Pending
+Phase 5  ██████████  Frontend Development                           ✅ Done
+Phase 6  ██████████  Frontend–Backend Integration                   ✅ Done
+Phase 7  ████░░░░░░  Testing & Performance Evaluation               🔄 In Progress
 Phase 8  ░░░░░░░░░░  Deployment & Documentation                     ⏳ Pending
 ```
 
@@ -342,6 +377,6 @@ Phase 8  ░░░░░░░░░░  Deployment & Documentation             
 
 *Department of Computer Science & Engineering (CSED) · Section 2FH · Academic Project*
 
-**DeepScan** — Fighting synthetic misinformation, one pixel at a time. 🔍
+**Deepfake** — Fighting synthetic misinformation, one pixel at a time. 🔍
 
 </div>
