@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=Deepfake&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=DeepScan&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -12,13 +12,14 @@
 [![Version](https://img.shields.io/badge/Version-1.0%20Light-blue?style=for-the-badge)](.)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)](.)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Connected-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](.)
-[![Express](https://img.shields.io/badge/Express.js-REST%20API-000000?style=for-the-badge&logo=express&logoColor=white)](.)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](.)
+[![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](.)
 [![License](https://img.shields.io/badge/License-Academic-8B5CF6?style=for-the-badge)](.)
 
 <br/>
 
 > 💀 **Deepfakes are getting scary good.**
-> Deepfake fights back — upload any image, get a verdict in seconds.
+> DeepScan fights back — upload any image, get a verdict in seconds.
 > *Because not everything you see is real.*
 
 <br/>
@@ -41,6 +42,8 @@
 - [EXIF Metadata Scoring](#-exif-metadata-scoring)
 - [API Endpoints](#-api-endpoints)
 - [Getting Started](#-getting-started)
+- [Docker Setup](#-docker-setup)
+- [CI/CD Pipeline](#-cicd-pipeline)
 - [Project Scope](#-project-scope)
 - [Implementation Plan](#-implementation-plan)
 - [Team](#-team)
@@ -50,9 +53,9 @@
 
 ## 🧠 About the Project
 
-**Deepfake** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are critical.
+**DeepScan** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are critical.
 
-Deepfake analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
+DeepScan analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
 
 | Layer | What it does |
 |---|---|
@@ -78,6 +81,8 @@ The system outputs a **probability score** (e.g., `72% — Likely Synthetic`) wi
 | 🗄️ **Result Logging** | Every scan saved to MongoDB with timestamp & breakdown | ✅ Done |
 | 🎨 **React UI** | Reusable components — responsive, fast, state-driven | ✅ Done |
 | ⚡ **Fast Pipeline** | End-to-end analysis completes in under 3 seconds | ✅ Done |
+| 🐳 **Docker Support** | Full stack containerized — one command to run everything | ✅ Done |
+| 🔁 **CI/CD Pipeline** | GitHub Actions — auto test, build, and publish on every push | ✅ Done |
 
 ---
 
@@ -122,6 +127,25 @@ The system outputs a **probability score** (e.g., `72% — Likely Synthetic`) wi
           │        MongoDB         │
           │  Store results & logs  │
           └────────────────────────┘
+```
+
+### Docker Architecture
+
+```
+  Browser (localhost:3001)
+          │
+          ▼
+  [ Frontend Container ]     React / Nginx — Port 3001→3000
+          │
+          │ HTTP API calls
+          ▼
+  [ Backend Container ]      Node.js + Express — Port 5000
+    /api/analyze
+    /api/results
+          │
+          │ Mongoose ODM
+          ▼
+  [ MongoDB Container ]      mongo:7 — Port 27017 — Volume: mongo_data
 ```
 
 ---
@@ -188,17 +212,20 @@ User Uploads Image
 ![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 
 </div>
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | React.js · Axios · CSS3 |
+| **Frontend** | React.js · Axios · CSS3 · Nginx |
 | **Backend** | Node.js · Express.js · Multer |
 | **Image Analysis** | Sharp · exifr · Heuristic Detection |
 | **Database** | MongoDB · Mongoose |
+| **DevOps** | Docker · Docker Compose · GitHub Actions |
 | **Dev Tools** | Postman · VS Code · Git · GitHub |
 
 ---
@@ -206,8 +233,6 @@ User Uploads Image
 ## 🔬 EXIF Metadata Scoring
 
 The metadata forensics layer analyzes hidden EXIF data embedded in every real camera photo. AI-generated images typically have none of this data — making its absence a strong synthetic signal.
-
-The scoring system works as follows:
 
 ```
 Base Score: 50  (neutral starting point)
@@ -233,7 +258,7 @@ Base Score: 50  (neutral starting point)
   Stable Diffusion · Midjourney · DALL-E · Adobe Firefly
 ```
 
-> 💡 **Why metadata matters:** Real photos taken by a camera always carry EXIF — device model, timestamp, sometimes GPS. Images shared via WhatsApp or Telegram have their EXIF stripped, which can raise the metadata score even for real photos. For accurate results, upload the **original file directly** without passing it through a messaging app.
+> 💡 **Note:** Images shared via WhatsApp or Telegram have their EXIF stripped, which raises the metadata score even for real photos. Upload the **original file directly** for accurate results.
 
 ---
 
@@ -281,36 +306,107 @@ Fetch last 20 scan results from the database.
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js v18+
-- MongoDB running locally
+### Option 1: Docker (Recommended)
+See [Docker Setup](#-docker-setup) below — one command runs everything.
 
-### Clone the repo
+### Option 2: Manual Setup
+
+**Prerequisites:** Node.js v18+ · MongoDB running locally
+
 ```bash
 git clone https://github.com/namann5/Ai_deepfake.git
 cd Ai_deepfake
 ```
 
-### Backend Setup
+**Backend:**
 ```bash
 cd deepscan-backend
 npm install
 node server.js
 ```
 
-### Environment Variables
 Create `.env` inside `deepscan-backend/`:
 ```env
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/deepscan
 ```
 
-### Frontend Setup
+**Frontend:**
 ```bash
 cd deepscan-frontend
 npm install
 npm start
 ```
+
+**Access:** Frontend → `http://localhost:3000` · Backend → `http://localhost:5000`
+
+---
+
+## 🐳 Docker Setup
+
+> **Prerequisites:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+### Start everything (dev mode with hot-reload)
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+```
+
+### Stop everything (keep data)
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+```
+
+### Stop and delete all data (fresh start)
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down -v
+```
+
+### Rebuild after Dockerfile changes
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
+```
+
+### View live logs
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
+```
+
+### Access URLs (Docker)
+
+| Service | URL |
+|---|---|
+| Frontend App | http://localhost:3001 |
+| Backend API | http://localhost:5000 |
+| Backend Health | http://localhost:5000/ |
+| All Results | http://localhost:5000/api/results |
+| MongoDB | mongodb://localhost:27017/deepscan |
+
+### Why Docker?
+
+| Before Docker | After Docker |
+|---|---|
+| Install Node + MongoDB manually | `docker compose up` — done |
+| 3 separate terminals to start | One command starts everything |
+| "Works on my machine" bugs | Identical environment everywhere |
+| Hours to onboard a new dev | ~5 minutes from clone to running |
+| Manual MongoDB setup | MongoDB runs in a container automatically |
+
+---
+
+## 🔁 CI/CD Pipeline
+
+Every push or pull request to `main` automatically triggers the GitHub Actions pipeline:
+
+```
+Push to main
+     │
+     ├── Job 1: Backend Test    → npm ci → run Jest tests
+     ├── Job 2: Frontend Build  → npm ci → npm run build
+     └── Job 3: Docker Push     → build images → push to GHCR
+                                  (only on direct push, not PRs)
+```
+
+Pipeline file: `.github/workflows/ci.yml`
 
 ---
 
@@ -322,6 +418,8 @@ npm start
 - **Probability scores** with verdict and confidence rating
 - Clean **web-based UI**
 - **Scan history** stored in MongoDB
+- **Docker** containerization for consistent environments
+- **CI/CD** automated testing and deployment
 
 ### ❌ Out of Scope
 - Real-time **video** deepfake detection
@@ -340,7 +438,7 @@ Phase 4  ██████████  Backend Development                    
 Phase 5  ██████████  Frontend Development                           ✅ Done
 Phase 6  ██████████  Frontend–Backend Integration                   ✅ Done
 Phase 7  ████░░░░░░  Testing & Performance Evaluation               🔄 In Progress
-Phase 8  ░░░░░░░░░░  Deployment & Documentation                     ⏳ Pending
+Phase 8  ██░░░░░░░░  Deployment & Documentation                     🔄 In Progress
 ```
 
 ---
@@ -367,7 +465,9 @@ Phase 8  ░░░░░░░░░░  Deployment & Documentation             
 4. Sharp.js documentation — image processing
 5. exifr documentation — EXIF metadata parsing
 6. FaceForensics++ dataset — Kaggle
-7. Online resources — computer vision & deep learning
+7. Docker documentation — containerization
+8. GitHub Actions documentation — CI/CD
+9. Online resources — computer vision & deep learning
 
 ---
 
@@ -377,6 +477,6 @@ Phase 8  ░░░░░░░░░░  Deployment & Documentation             
 
 *Department of Computer Science & Engineering (CSED) · Section 2FH · Academic Project*
 
-**Deepfake** — Fighting synthetic misinformation, one pixel at a time. 🔍
+**DeepScan** — Fighting synthetic misinformation, one pixel at a time. 🔍
 
 </div>
