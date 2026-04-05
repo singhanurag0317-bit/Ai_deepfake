@@ -68,14 +68,6 @@ export default function HomePage({ isAuthed }) {
                   <span className="landing__list-label">🛡️ Images Scanned</span>
                   <span className="landing__list-value"><CountUp end={1248390} /></span>
                 </div>
-                <div className="landing__list-item">
-                  <span className="landing__list-label">⚡ Avg. Detection Time</span>
-                  <span className="landing__list-value"><CountUp end={1.2} decimals={1} suffix=" seconds" isTime={true} /></span>
-                </div>
-                <div className="landing__list-item">
-                  <span className="landing__list-label">✅ Accuracy Rate</span>
-                  <span className="landing__list-value"><CountUp end={98.7} decimals={1} suffix="%" /></span>
-                </div>
               </div>
             </div>
             
