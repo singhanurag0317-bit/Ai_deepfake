@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=DeepScan&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,50:302b63,100:24243e&height=220&section=header&text=Deepfake&fontSize=90&fontColor=ffffff&fontAlignY=40&desc=AI-Generated%20Media%20Verifier&descAlignY=62&descSize=22&animation=fadeIn" width="100%"/>
 
 <br/>
 
@@ -19,7 +19,7 @@
 <br/>
 
 > 💀 **Deepfakes are getting scary good.**
-> DeepScan fights back — upload any image, get a verdict in seconds.
+> Deepfake fights back — upload any image, get a verdict in seconds.
 > *Because not everything you see is real.*
 
 <br/>
@@ -53,9 +53,9 @@
 
 ## 🧠 About the Project
 
-**DeepScan** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are critical.
+**Deepfake** is a lightweight, web-based deepfake and AI-generated media verifier built as an academic project. As synthetic media becomes increasingly indistinguishable from reality, tools that help everyday users verify digital content are more critical than ever.
 
-DeepScan analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
+Deepfake analyzes uploaded images through a **3-layer detection pipeline** — no GPU, no heavy setup, just results:
 
 | Layer | What it does |
 |---|---|
@@ -194,13 +194,15 @@ User Uploads Image
       └─────────────────────────┘
 ```
 
-1. **Upload** — JPEG, PNG, WEBP · max 5MB
-2. **Validate** — Multer checks file type and size
-3. **Artifact Analysis** — Sharp scans color variance, edge sharpness, brightness
-4. **Metadata Forensics** — EXIF flags missing camera, AI software, timestamp anomalies
-5. **Score Fusion** — Model 50% + Artifact 30% + Metadata 20%
-6. **DB Logging** — Full result saved to MongoDB
-7. **Response** — Score, verdict, confidence, breakdown returned to frontend
+**Step-by-step breakdown:**
+
+1. 📤 **Upload** — JPEG, PNG, WEBP · max 5MB accepted
+2. ✅ **Validate** — Multer checks file type and size before processing
+3. 🎨 **Artifact Analysis** — Sharp scans color variance, edge sharpness, and brightness irregularities
+4. 🔎 **Metadata Forensics** — EXIF flags missing camera info, AI software signatures, and timestamp anomalies
+5. ⚖️ **Score Fusion** — Model 50% + Artifact 30% + Metadata 20% combined into a single probability score
+6. 🗄️ **DB Logging** — Full result saved to MongoDB for scan history
+7. 📊 **Response** — Score, verdict, confidence level, and detailed breakdown returned to the frontend
 
 ---
 
@@ -219,14 +221,14 @@ User Uploads Image
 
 </div>
 
-| Layer | Technology |
-|---|---|
-| **Frontend** | React.js · Axios · CSS3 · Nginx |
-| **Backend** | Node.js · Express.js · Multer |
-| **Image Analysis** | Sharp · exifr · Heuristic Detection |
-| **Database** | MongoDB · Mongoose |
-| **DevOps** | Docker · Docker Compose · GitHub Actions |
-| **Dev Tools** | Postman · VS Code · Git · GitHub |
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Frontend** | React.js · Axios · CSS3 · Nginx | Interactive UI, API communication, production serving |
+| **Backend** | Node.js · Express.js · Multer | REST API, file handling, routing |
+| **Image Analysis** | Sharp · exifr · Heuristic Detection | Pixel-level processing, metadata extraction |
+| **Database** | MongoDB · Mongoose | Scan result persistence and history |
+| **DevOps** | Docker · Docker Compose · GitHub Actions | Containerization, orchestration, CI/CD |
+| **Dev Tools** | Postman · VS Code · Git · GitHub | API testing, development, version control |
 
 ---
 
@@ -258,7 +260,7 @@ Base Score: 50  (neutral starting point)
   Stable Diffusion · Midjourney · DALL-E · Adobe Firefly
 ```
 
-> 💡 **Note:** Images shared via WhatsApp or Telegram have their EXIF stripped, which raises the metadata score even for real photos. Upload the **original file directly** for accurate results.
+> 💡 **Note:** Images shared via WhatsApp or Telegram have their EXIF stripped, which inflates the metadata score even for real photos. Always upload the **original file directly via USB** for accurate results.
 
 ---
 
@@ -320,20 +322,20 @@ cd Ai_deepfake
 
 **Backend:**
 ```bash
-cd deepscan-backend
+cd deepfake-backend
 npm install
 node server.js
 ```
 
-Create `.env` inside `deepscan-backend/`:
+Create `.env` inside `deepfake-backend/`:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/deepscan
+MONGODB_URI=mongodb://localhost:27017/deepfake
 ```
 
 **Frontend:**
 ```bash
-cd deepscan-frontend
+cd deepfake-frontend
 npm install
 npm start
 ```
@@ -379,7 +381,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f
 | Backend API | http://localhost:5000 |
 | Backend Health | http://localhost:5000/ |
 | All Results | http://localhost:5000/api/results |
-| MongoDB | mongodb://localhost:27017/deepscan |
+| MongoDB | mongodb://localhost:27017/deepfake |
 
 ### Why Docker?
 
@@ -416,15 +418,16 @@ Pipeline file: `.github/workflows/ci.yml`
 - Detection of AI-generated and deepfake **images**
 - **Visual artifact** and **metadata** analysis
 - **Probability scores** with verdict and confidence rating
-- Clean **web-based UI**
+- Clean **web-based UI** accessible to non-technical users
 - **Scan history** stored in MongoDB
-- **Docker** containerization for consistent environments
-- **CI/CD** automated testing and deployment
+- **Docker** containerization for consistent cross-platform environments
+- **CI/CD** automated testing and deployment pipeline
 
 ### ❌ Out of Scope
 - Real-time **video** deepfake detection
-- **Legal or forensic-grade** accuracy
-- Detection of models released after training data cutoff
+- **Legal or forensic-grade** accuracy guarantees
+- Detection of AI models released after training data cutoff
+- Audio deepfake analysis
 
 ---
 
@@ -477,6 +480,6 @@ Phase 8  ██░░░░░░░░  Deployment & Documentation             
 
 *Department of Computer Science & Engineering (CSED) · Section 2FH · Academic Project*
 
-**DeepScan** — Fighting synthetic misinformation, one pixel at a time. 🔍
+**Deepfake** — Fighting synthetic misinformation, one pixel at a time. 🔍
 
 </div>
