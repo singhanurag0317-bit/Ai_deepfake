@@ -5,7 +5,6 @@ export default function ResultCard({
   score,
   verdict,
   model_score: modelScore,
-  artifact_score: artifactScore,
   metadata_score: metadataScore,
 }) {
   return (
@@ -25,10 +24,6 @@ export default function ResultCard({
             <strong>{modelScore ?? '--'}</strong>
           </div>
           <div className="result-card__breakdown-item">
-            <span>Artifact Score</span>
-            <strong>{artifactScore ?? '--'}</strong>
-          </div>
-          <div className="result-card__breakdown-item">
             <span>Metadata Score</span>
             <strong>{metadataScore ?? '--'}</strong>
           </div>
@@ -37,3 +32,4 @@ export default function ResultCard({
     </section>
   );
 }
+

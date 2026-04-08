@@ -16,13 +16,20 @@ const storage = multer.diskStorage({
   }
 });
 
-const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+// ─── File Filter ───────────────────────────────────────────────────────────
+const ALLOWED_MIME_TYPES = [
+  // Images
+  'image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/gif', 'image/tiff',
+  // Videos
+  'video/mp4', 'video/x-msvideo', 'video/quicktime', 'video/x-matroska',
+  'video/webm', 'video/x-flv', 'video/x-ms-wmv',
+];
 
 const fileFilter = (req, file, cb) => {
   if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error('Only JPEG, PNG, and WEBP images are allowed'), false);
+    cb(new Error('Only JPEG, PNG, WEBP images and MP4, AVI, MOV, MKV, WEBM videos are allowed'), false);
   }
 };
 
@@ -41,7 +48,7 @@ const videoFileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // 5 MB
+  limits: { fileSize: 50 * 1024 * 1024 } // 50 MB (videos need more room)
 });
 
 const uploadVideo = multer({

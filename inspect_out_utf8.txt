@@ -1,0 +1,90 @@
+﻿docker : WARNING: All log 
+messages before 
+absl::InitializeLog() is 
+called are written to 
+STDERR
+At line:1 char:1
++ docker exec 
+deepscan-ml-service 
+python 
+/app/inspect_models.py > 
+inspe ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (W  
+  ARNING: All lo...itte   
+ n to STDERR:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+I0000 
+00:00:1775466709.495656   
+   60 port.cc:153] oneDNN 
+custom operations are on. 
+You may see slightly 
+different numerical 
+results due to 
+floating-point round-off 
+errors from different 
+computation orders. To 
+turn them off, set the 
+environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 
+00:00:1775466709.498365   
+   60 cudart_stub.cc:31] 
+Could not find cuda 
+drivers on your machine, 
+GPU will not be used.
+I0000 
+00:00:1775466709.708919   
+   60 
+cpu_feature_guard.cc:227] 
+This TensorFlow binary is 
+optimized to use 
+available CPU 
+instructions in 
+performance-critical 
+operations.
+To enable the following 
+instructions: AVX2 
+AVX512F AVX512_VNNI FMA, 
+in other operations, 
+rebuild TensorFlow with 
+the appropriate compiler 
+flags.
+WARNING: All log messages 
+before 
+absl::InitializeLog() is 
+called are written to 
+STDERR
+I0000 
+00:00:1775466712.671779   
+   60 port.cc:153] oneDNN 
+custom operations are on. 
+You may see slightly 
+different numerical 
+results due to 
+floating-point round-off 
+errors from different 
+computation orders. To 
+turn them off, set the 
+environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+I0000 
+00:00:1775466712.675640   
+   60 cudart_stub.cc:31] 
+Could not find cuda 
+drivers on your machine, 
+GPU will not be used.
+TensorFlow version: 2.21.0
+
+=== Inspecting Image Model ===
+Error loading image model: [Errno 2] Unable to synchronously open file (unable to open file: name = '/trained_models/image_prediction_model/model_cp (1).h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+=== Inspecting Video Model ===
+Error loading video model: File not found: filepath=/trained_models/video_prediction_model/best_model.keras. Please ensure the file is an accessible `.keras` zip file.

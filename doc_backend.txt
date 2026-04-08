@@ -1,0 +1,14 @@
+deepscan-backend  | [dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+deepscan-backend  | 🚀 Server running on http://localhost:5000
+deepscan-backend  | ✅ MongoDB Connected
+deepscan-backend  | [0mGET / [32m200[0m 6.040 ms - 81[0m
+deepscan-backend  | [0mGET / [32m200[0m 0.618 ms - 81[0m
+deepscan-backend  | [0mGET / [32m200[0m 0.901 ms - 81[0m
+deepscan-backend  | 📂 File received: 9ceee3a57ce9c05ea2688f83da7cd22d.jpg
+deepscan-backend  | ❌ ML Service Image Error: Image model not loaded. Check server logs.
+deepscan-backend  | 💾 Saved to DB: new ObjectId('69d3cfd15dfa1eb2888e1529')
+deepscan-backend  | [0mPOST /api/analyze [32m200[0m 85.898 ms - 404[0m
+deepscan-backend  | 🗑️  Temp file deleted
+deepscan-backend  | [0mGET / [32m200[0m 2.108 ms - 81[0m
+deepscan-backend  | [0mGET / [32m200[0m 0.343 ms - 81[0m
+deepscan-backend  | [0mGET / [32m200[0m 0.339 ms - 81[0m

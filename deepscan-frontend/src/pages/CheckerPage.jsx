@@ -14,11 +14,23 @@ export default function CheckerPage() {
         }}>
           🔍 Deepfake Detector
         </div>
+
         <h1 className="page__title--glow">AI Image Authenticity Check</h1>
-        <p style={{ marginTop: 12, color: 'var(--muted)', fontSize: '1rem', maxWidth: 520, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.65 }}>
-          Upload a single image and get a probability score based on model, artifact, and metadata analysis.
+
+        <p style={{ 
+          marginTop: 12, 
+          color: 'var(--muted)', 
+          fontSize: '1rem', 
+          maxWidth: 520, 
+          marginLeft: 'auto', 
+          marginRight: 'auto', 
+          lineHeight: 1.65 
+        }}>
+          Upload an image or video and get a deepfake probability score based on model, artifact, and metadata analysis.
         </p>
+
       </div>
+
       <UploadZone id="analyzer" />
     </>
   );

@@ -1,0 +1,20 @@
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491752.058216       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491752.058527       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | I0000 00:00:1775491752.110268       1 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+deepscan-ml-service  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491753.420436       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491753.420827       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | E0000 00:00:1775491753.656728       1 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+deepscan-ml-service  | Attempting to load image weights: /app/trained_models/image_prediction_model/model_cp (1).h5
+deepscan-ml-service  | Successfully loaded image model weights!
+deepscan-ml-service  | Loading video model: /app/trained_models/video_prediction_model/best_model.keras
+deepscan-ml-service  | 🚀 Starting Flask ML API on port 5001...
+deepscan-ml-service  |  * Serving Flask app 'app'
+deepscan-ml-service  |  * Debug mode: off
+deepscan-ml-service  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+deepscan-ml-service  |  * Running on all addresses (0.0.0.0)
+deepscan-ml-service  |  * Running on http://127.0.0.1:5001
+deepscan-ml-service  |  * Running on http://172.18.0.3:5001
+deepscan-ml-service  | [33mPress CTRL+C to quit[0m

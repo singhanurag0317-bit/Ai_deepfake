@@ -79,6 +79,12 @@ services:
     volumes:
       - ./deepscan-backend/trained_models:/app/trained_models
       - backend_uploads:/app/uploads
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 1G
 
 # ── Persistent Volumes ─────────────────────────────────────────
 # mongo_data: preserves database across container restarts

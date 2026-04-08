@@ -153,7 +153,6 @@ export default function UploadZone({ id }) {
             score={result.final_score}
             verdict={result.verdict}
             model_score={result.breakdown?.model_score}
-            artifact_score={result.breakdown?.artifact_score}
             metadata_score={result.breakdown?.metadata_score}
           />
           <MetadataPanel metadata={result.raw_metadata} />
