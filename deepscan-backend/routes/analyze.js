@@ -3,13 +3,13 @@ const router = express.Router();
 const fs = require('fs').promises;
 const { upload, uploadVideo, handleMulterError } = require('../middleware/fileValidator');
 const { analyzeMetadata } = require('../services/metadataService');
-const { runImageMLModel, runVideoMLModel } = require('../services/mlService');
-const { aggregateScores } = require('../services/scoreAggregator');
+const { runMLModel } = require('../services/mlservice');
 const Result = require('../models/Result');
 
-// ─── POST /api/analyze ─────────────────────────────────────────────────────
-router.post('/analyze', upload.single('image'), async (req, res, next) => {
-  // Guard: ensure a file was actually uploaded
+const labelFromScore = (score) => (score >= 50 ? 'deepfake' : 'real');
+
+// --- POST /api/analyze ------------------------------------------------------
+router.post('/analyze', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No image file provided.' });
   }
@@ -17,64 +17,66 @@ router.post('/analyze', upload.single('image'), async (req, res, next) => {
   const filePath = req.file.path;
 
   try {
-    console.log('📂 File received:', req.file.filename);
+    console.log('File received:', req.file.filename);
 
-    // Run metadata + ML analysis in parallel
     const [metadataResult, mlResult] = await Promise.all([
       analyzeMetadata(filePath),
-      runImageMLModel(filePath)
+      runMLModel(filePath, req.file.mimetype),
     ]);
 
-    // Aggregate into final verdict
-    const result = aggregateScores(
-      metadataResult.metadata_score,
-      mlResult.model_score,
-      mlResult.artifact_score
-    );
+    const modelScore = Number(mlResult.model_score);
+    if (!Number.isFinite(modelScore)) {
+      throw new Error('Invalid model score returned by ML service');
+    }
 
-    // Persist result to MongoDB
+    const prediction = mlResult.prediction || labelFromScore(modelScore);
+    const confidence = Number.isFinite(mlResult.confidence)
+      ? Number(mlResult.confidence)
+      : Number((modelScore / 100).toFixed(6));
+
     const savedResult = await Result.create({
       filename: req.file.filename,
       originalName: req.file.originalname,
-      final_score: result.final_score,
-      verdict: result.verdict,
-      confidence: result.confidence,
-      breakdown: result.breakdown,
-      flags: metadataResult.flags,
-      raw_metadata: metadataResult.raw
-    });
-
-    console.log('💾 Saved to DB:', savedResult._id);
-
-    // Delete temp upload file asynchronously (non-blocking)
-    fs.unlink(filePath)
-      .then(() => console.log('🗑️  Temp file deleted'))
-      .catch((e) => console.warn('⚠️  Could not delete temp file:', e.message));
-
-    return res.status(200).json({
-      message: 'Analysis complete',
-      id: savedResult._id,
-      filename: req.file.filename,
-      originalName: req.file.originalname,
-      final_score: result.final_score,
-      verdict: result.verdict,
-      confidence: result.confidence,
-      breakdown: result.breakdown,
+      final_score: modelScore,
+      verdict: prediction === 'deepfake' ? 'SYNTHETIC' : 'REAL',
+      confidence: confidence >= 0.8 ? 'High' : confidence >= 0.6 ? 'Medium' : 'Low',
+      breakdown: {
+        model_score: modelScore,
+        metadata_score: metadataResult.metadata_score,
+      },
       flags: metadataResult.flags,
       raw_metadata: metadataResult.raw,
-      analyzed_at: savedResult.analyzed_at
     });
 
+    fs.unlink(filePath)
+      .then(() => console.log('Temp file deleted'))
+      .catch((e) => console.warn('Could not delete temp file:', e.message));
+
+    return res.status(200).json({
+      prediction,
+      confidence,
+      score: modelScore,
+      final_score: modelScore,
+      verdict: prediction === 'deepfake' ? 'SYNTHETIC' : 'REAL',
+      breakdown: {
+        model_score: modelScore,
+        metadata_score: metadataResult.metadata_score,
+      },
+      raw_metadata: metadataResult.raw,
+      flags: metadataResult.flags,
+      id: savedResult._id,
+      analyzed_at: savedResult.analyzed_at,
+      metadata_flags: metadataResult.flags,
+    });
   } catch (err) {
-    // Attempt cleanup on error
-    fs.unlink(filePath).catch(() => { });
-    console.error('❌ Analysis error:', err.message);
+    fs.unlink(filePath).catch(() => {});
+    console.error('Analysis error:', err.message);
     return res.status(503).json({ error: 'Analysis service failed. Please try again.' });
   }
 });
 
-// ─── POST /api/analyze-video ───────────────────────────────────────────────
-router.post('/analyze-video', uploadVideo.single('video'), async (req, res, next) => {
+// --- POST /api/analyze-video ------------------------------------------------
+router.post('/analyze-video', uploadVideo.single('video'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No video file provided.' });
   }
@@ -82,63 +84,60 @@ router.post('/analyze-video', uploadVideo.single('video'), async (req, res, next
   const filePath = req.file.path;
 
   try {
-    console.log('📂 Video received:', req.file.filename);
+    console.log('Video received:', req.file.filename);
 
-    const mlResult = await runVideoMLModel(filePath);
+    const mlResult = await runMLModel(filePath, req.file.mimetype);
+    const modelScore = Number(mlResult.model_score);
+    if (!Number.isFinite(modelScore)) {
+      throw new Error('Invalid video model score returned by ML service');
+    }
 
-    // Provide a neutral metadata score for videos as EXIF doesn't apply cleanly
-    const metadataResult = {
-      metadata_score: 50,
-      flags: ['Video metadata check skipped'],
-      raw: null
-    };
-
-    const result = aggregateScores(
-      metadataResult.metadata_score,
-      mlResult.model_score,
-      mlResult.artifact_score
-    );
+    const verdict = modelScore >= 50 ? 'SYNTHETIC' : 'REAL';
+    const confidenceBand = modelScore >= 80 ? 'High' : modelScore >= 60 ? 'Medium' : 'Low';
 
     const savedResult = await Result.create({
       filename: req.file.filename,
       originalName: req.file.originalname,
-      final_score: result.final_score,
-      verdict: result.verdict,
-      confidence: result.confidence,
-      breakdown: result.breakdown,
-      flags: metadataResult.flags,
-      raw_metadata: metadataResult.raw
+      final_score: modelScore,
+      verdict,
+      confidence: confidenceBand,
+      breakdown: {
+        model_score: modelScore,
+        metadata_score: 50,
+      },
+      flags: ['Video metadata check skipped'],
+      raw_metadata: null,
     });
 
-    console.log('💾 Saved video result to DB:', savedResult._id);
-
     fs.unlink(filePath)
-      .then(() => console.log('🗑️  Temp video file deleted'))
-      .catch((e) => console.warn('⚠️  Could not delete temp video:', e.message));
+      .then(() => console.log('Temp video file deleted'))
+      .catch((e) => console.warn('Could not delete temp video:', e.message));
 
     return res.status(200).json({
       message: 'Video analysis complete',
       id: savedResult._id,
       filename: req.file.filename,
       originalName: req.file.originalname,
-      final_score: result.final_score,
-      verdict: result.verdict,
-      confidence: result.confidence,
-      breakdown: result.breakdown,
-      flags: metadataResult.flags,
-      raw_metadata: metadataResult.raw,
-      analyzed_at: savedResult.analyzed_at
+      final_score: modelScore,
+      verdict,
+      confidence: confidenceBand,
+      breakdown: {
+        model_score: modelScore,
+        metadata_score: 50,
+      },
+      flags: ['Video metadata check skipped'],
+      raw_metadata: null,
+      analyzed_at: savedResult.analyzed_at,
+      frames_analyzed: mlResult.frames_analyzed || 0,
     });
-
   } catch (err) {
-    fs.unlink(filePath).catch(() => { });
-    console.error('❌ Video Analysis error:', err.message);
+    fs.unlink(filePath).catch(() => {});
+    console.error('Video Analysis error:', err.message);
     return res.status(503).json({ error: 'Video analysis service failed. Please try again.' });
   }
 });
 
-// ─── GET /api/results ──────────────────────────────────────────────────────
-// Supports ?page=1&limit=20 for pagination
+// --- GET /api/results -------------------------------------------------------
 router.get('/results', async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page, 10) || 1);
@@ -150,8 +149,8 @@ router.get('/results', async (req, res) => {
         .sort({ analyzed_at: -1 })
         .skip(skip)
         .limit(limit)
-        .select('-raw_metadata'), // exclude heavy field from list
-      Result.countDocuments()
+        .select('-raw_metadata'),
+      Result.countDocuments(),
     ]);
 
     return res.json({
@@ -159,15 +158,15 @@ router.get('/results', async (req, res) => {
       page,
       limit,
       totalPages: Math.ceil(total / limit),
-      results
+      results,
     });
   } catch (err) {
-    console.error('❌ Fetch results error:', err.message);
+    console.error('Fetch results error:', err.message);
     return res.status(500).json({ error: 'Could not fetch results.' });
   }
 });
 
-// ─── GET /api/results/:id ──────────────────────────────────────────────────
+// --- GET /api/results/:id ---------------------------------------------------
 router.get('/results/:id', async (req, res) => {
   try {
     const result = await Result.findById(req.params.id);
@@ -176,16 +175,14 @@ router.get('/results/:id', async (req, res) => {
     }
     return res.json(result);
   } catch (err) {
-    // Invalid ObjectId format
     if (err.name === 'CastError') {
       return res.status(400).json({ error: 'Invalid result ID format.' });
     }
-    console.error('❌ Fetch result error:', err.message);
+    console.error('Fetch result error:', err.message);
     return res.status(500).json({ error: 'Could not fetch result.' });
   }
 });
 
-// ─── Multer Error Handler (must be last) ───────────────────────────────────
 router.use(handleMulterError);
 
 module.exports = router;

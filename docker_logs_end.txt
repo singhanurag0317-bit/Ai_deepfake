@@ -1,0 +1,152 @@
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:06.193+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn978","msg":"Connection ended","attr":{"remote":"127.0.0.1:55124","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e0078c3b-6ad3-474d-af07-a08ac0911b1a"}},"connectionId":978,"connectionCount":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:06.193+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn977","msg":"Connection ended","attr":{"remote":"127.0.0.1:55116","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"bf306837-83b5-4516-ab3a-c71792aaacef"}},"connectionId":977,"connectionCount":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:06.193+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn976","msg":"Connection ended","attr":{"remote":"127.0.0.1:55106","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"dc2b517e-6473-49cd-b6bd-689b81f2933a"}},"connectionId":976,"connectionCount":1}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:06.193+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn975","msg":"Connection ended","attr":{"remote":"127.0.0.1:55098","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"e70af678-5b2b-4aad-a4b1-0d19851d9be1"}},"connectionId":975,"connectionCount":0}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.582+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:44760","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"234f54fe-725a-4f29-a5b5-ca1e5fee803e"}},"connectionId":979,"connectionCount":1}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.584+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn979","msg":"client metadata","attr":{"remote":"127.0.0.1:44760","client":"conn979","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.584+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn979","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:44760","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.587+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:44768","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4a559f91-fcce-404a-8c44-802620e469eb"}},"connectionId":980,"connectionCount":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.588+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn980","msg":"client metadata","attr":{"remote":"127.0.0.1:44768","client":"conn980","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.588+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn980","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:44768","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.598+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn980","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":10}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.659+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:44780","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1779e242-1626-4541-ac36-50c3cf677434"}},"connectionId":981,"connectionCount":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.660+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:44782","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ecfc9620-d76f-42ea-a423-891817ba7739"}},"connectionId":982,"connectionCount":4}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.662+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn981","msg":"client metadata","attr":{"remote":"127.0.0.1:44780","client":"conn981","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.662+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn981","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:44780","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.662+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn982","msg":"client metadata","attr":{"remote":"127.0.0.1:44782","client":"conn982","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.662+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn982","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:44782","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.664+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:44798","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"cc56ec96-8057-40ff-b4a4-3718503e8bc8"}},"connectionId":983,"connectionCount":5}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.666+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn982","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.666+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn983","msg":"client metadata","attr":{"remote":"127.0.0.1:44798","client":"conn983","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.666+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn983","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:44798","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.669+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn983","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.673+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn979","msg":"Connection ended","attr":{"remote":"127.0.0.1:44760","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"234f54fe-725a-4f29-a5b5-ca1e5fee803e"}},"connectionId":979,"connectionCount":4}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.673+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn983","msg":"Connection ended","attr":{"remote":"127.0.0.1:44798","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"cc56ec96-8057-40ff-b4a4-3718503e8bc8"}},"connectionId":983,"connectionCount":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.673+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn982","msg":"Connection ended","attr":{"remote":"127.0.0.1:44782","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"ecfc9620-d76f-42ea-a423-891817ba7739"}},"connectionId":982,"connectionCount":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.673+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn981","msg":"Connection ended","attr":{"remote":"127.0.0.1:44780","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"1779e242-1626-4541-ac36-50c3cf677434"}},"connectionId":981,"connectionCount":1}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:16.673+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn980","msg":"Connection ended","attr":{"remote":"127.0.0.1:44768","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4a559f91-fcce-404a-8c44-802620e469eb"}},"connectionId":980,"connectionCount":0}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.310+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:50126","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"2f86c51b-4a45-4b05-b44e-7e3515571940"}},"connectionId":984,"connectionCount":1}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.311+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn984","msg":"client metadata","attr":{"remote":"127.0.0.1:50126","client":"conn984","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.311+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn984","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:50126","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.315+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:50138","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"25bc8648-1ea2-40ad-ae9e-75e19394d3f8"}},"connectionId":985,"connectionCount":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.315+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn985","msg":"client metadata","attr":{"remote":"127.0.0.1:50138","client":"conn985","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.315+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn985","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:50138","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.325+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn985","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":9}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.386+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:50152","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f76683ac-733c-4b7d-b572-f0a7d03881dc"}},"connectionId":986,"connectionCount":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.386+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:50160","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4923bd24-f7b5-46d3-9347-7e31cc42bd79"}},"connectionId":987,"connectionCount":4}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.389+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn986","msg":"client metadata","attr":{"remote":"127.0.0.1:50152","client":"conn986","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.389+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn986","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:50152","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.389+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn987","msg":"client metadata","attr":{"remote":"127.0.0.1:50160","client":"conn987","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.389+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn987","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:50160","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.391+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"127.0.0.1:50174","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"824a0e85-a7a0-4492-8986-1a3dfd031876"}},"connectionId":988,"connectionCount":5}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.393+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn987","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":4}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.394+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn988","msg":"client metadata","attr":{"remote":"127.0.0.1:50174","client":"conn988","negotiatedCompressors":[],"doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.394+00:00"},"s":"I",  "c":"ACCESS",   "id":10483900,"ctx":"conn988","msg":"Connection not authenticating","attr":{"client":"127.0.0.1:50174","doc":{"application":{"name":"mongosh 2.8.2"},"driver":{"name":"nodejs|mongosh","version":"7.1.0|2.8.2"},"platform":"Node.js v24.14.1, LE","os":{"name":"linux","architecture":"x64","version":"3.10.0-327.22.2.el7.x86_64","type":"Linux"},"env":{"container":{"runtime":"docker"}}}}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.397+00:00"},"s":"I",  "c":"NETWORK",  "id":6788700, "ctx":"conn988","msg":"Received first command on ingress connection since session start or auth handshake","attr":{"elapsedMillis":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.400+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn984","msg":"Connection ended","attr":{"remote":"127.0.0.1:50126","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"2f86c51b-4a45-4b05-b44e-7e3515571940"}},"connectionId":984,"connectionCount":4}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.400+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn988","msg":"Connection ended","attr":{"remote":"127.0.0.1:50174","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"824a0e85-a7a0-4492-8986-1a3dfd031876"}},"connectionId":988,"connectionCount":3}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.400+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn987","msg":"Connection ended","attr":{"remote":"127.0.0.1:50160","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"4923bd24-f7b5-46d3-9347-7e31cc42bd79"}},"connectionId":987,"connectionCount":2}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.400+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn986","msg":"Connection ended","attr":{"remote":"127.0.0.1:50152","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"f76683ac-733c-4b7d-b572-f0a7d03881dc"}},"connectionId":986,"connectionCount":1}}
+deepscan-mongo  | {"t":{"$date":"2026-04-06T15:08:28.400+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn985","msg":"Connection ended","attr":{"remote":"127.0.0.1:50138","isLoadBalanced":false,"uuid":{"uuid":{"$uuid":"25bc8648-1ea2-40ad-ae9e-75e19394d3f8"}},"connectionId":985,"connectionCount":0}}
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-backend     | 
+deepscan-backend     | Node.js v20.20.2
+deepscan-backend     | [dotenv@17.3.1] injecting env (0) from .env -- tip: 🤖 agentic secret storage: https://dotenvx.com/as2
+deepscan-backend     | node:internal/modules/cjs/loader:1210
+deepscan-backend     |   throw err;
+deepscan-backend     |   ^
+deepscan-backend     | 
+deepscan-backend     | Error: Cannot find module '../services/mlService'
+deepscan-backend     | Require stack:
+deepscan-backend     | - /app/routes/analyze.js
+deepscan-backend     | - /app/server.js
+deepscan-backend     |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+deepscan-backend     |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+deepscan-ml-service  | I0000 00:00:1775486041.649917       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775486041.650418       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | I0000 00:00:1775486041.713179       1 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+deepscan-ml-service  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775486043.330315       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775486043.331016       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | Loading model: /app/trained_models/image_prediction_model/model_cp (1).h5
+deepscan-ml-service  | Error loading model /app/trained_models/image_prediction_model/model_cp (1).h5: No model config found in the file at /app/trained_models/image_prediction_model/model_cp (1).h5.
+deepscan-ml-service  | Loading model: /app/trained_models/video_prediction_model/best_model.keras
+deepscan-ml-service  | Error loading model /app/trained_models/video_prediction_model/best_model.keras: <class 'keras.src.models.functional.Functional'> could not be deserialized properly. Please ensure that components that are Python object instances (layers, models, etc.) returned by `get_config()` are explicitly deserialized in the model's `from_config()` method.
+deepscan-ml-service  | 
+deepscan-ml-service  | config={'module': 'keras.src.models.functional', 'class_name': 'Functional', 'config': {}, 'registered_name': 'Functional', 'build_config': {'input_shape': None}, 'compile_config': None}.
+deepscan-ml-service  | 
+deepscan-backend     |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+deepscan-ml-service  | Exception encountered: Could not locate class 'CastToFloat32'. Make sure custom classes and functions are decorated with `@keras.saving.register_keras_serializable()`. If they are already decorated, make sure they are all imported so that the decorator is run before trying to load them. Full object config: {'module': 'autokeras.keras_layers', 'class_name': 'CastToFloat32', 'config': {'name': 'cast_to_float32', 'trainable': True, 'dtype': {'module': 'keras', 'class_name': 'DTypePolicy', 'config': {'name': 'float32'}, 'registered_name': None}}, 'registered_name': 'Custom>CastToFloat32', 'build_config': {'input_shape': [None, 64, 64, 3]}, 'name': 'cast_to_float32', 'inbound_nodes': [{'args': [{'class_name': '__keras_tensor__', 'config': {'shape': [None, 64, 64, 3], 'dtype': 'uint8', 'keras_history': ['input_layer', 0, 0]}}], 'kwargs': {}}]}
+deepscan-ml-service  | 🚀 Starting Flask ML API on port 5001...
+deepscan-ml-service  |  * Serving Flask app 'app'
+deepscan-ml-service  |  * Debug mode: off
+deepscan-backend     |     at require (node:internal/modules/helpers:182:18)
+deepscan-backend     |     at Object.<anonymous> (/app/routes/analyze.js:6:46)
+deepscan-backend     |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+deepscan-backend     |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+deepscan-backend     |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+deepscan-ml-service  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+deepscan-ml-service  |  * Running on all addresses (0.0.0.0)
+deepscan-backend     |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+deepscan-backend     |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+deepscan-ml-service  |  * Running on http://127.0.0.1:5001
+deepscan-backend     |   code: 'MODULE_NOT_FOUND',
+deepscan-backend     |   requireStack: [ '/app/routes/analyze.js', '/app/server.js' ]
+deepscan-backend     | }
+deepscan-backend     | 
+deepscan-ml-service  |  * Running on http://172.18.0.3:5001
+deepscan-ml-service  | [33mPress CTRL+C to quit[0m
+deepscan-backend     | Node.js v20.20.2
+deepscan-backend     | [dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+deepscan-backend     | node:internal/modules/cjs/loader:1210
+deepscan-backend     |   throw err;
+deepscan-frontend    | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+deepscan-frontend    | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+deepscan-backend     |   ^
+deepscan-backend     | 
+deepscan-frontend    | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+deepscan-backend     | Error: Cannot find module '../services/mlService'
+deepscan-backend     | Require stack:
+deepscan-frontend    | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+deepscan-frontend    | 10-listen-on-ipv6-by-default.sh: info: /etc/nginx/conf.d/default.conf differs from the packaged version
+deepscan-backend     | - /app/routes/analyze.js
+deepscan-backend     | - /app/server.js
+deepscan-frontend    | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+deepscan-frontend    | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+deepscan-frontend    | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+deepscan-backend     |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+deepscan-backend     |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+deepscan-backend     |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+deepscan-backend     |     at require (node:internal/modules/helpers:182:18)
+deepscan-frontend    | /docker-entrypoint.sh: Configuration complete; ready for start up
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: using the "epoll" event method
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: nginx/1.27.5
+deepscan-backend     |     at Object.<anonymous> (/app/routes/analyze.js:6:46)
+deepscan-backend     |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+deepscan-backend     |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: built by gcc 14.2.0 (Alpine 14.2.0) 
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: OS: Linux 6.6.87.2-microsoft-standard-WSL2
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+deepscan-backend     |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+deepscan-backend     |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker processes
+deepscan-backend     |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 29
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 30
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 31
+deepscan-backend     |   code: 'MODULE_NOT_FOUND',
+deepscan-backend     |   requireStack: [ '/app/routes/analyze.js', '/app/server.js' ]
+deepscan-backend     | }
+deepscan-backend     | 
+deepscan-backend     | Node.js v20.20.2
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 32
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 33
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 34
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 35
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 36
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 37
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 38
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 39
+deepscan-frontend    | 2026/04/06 14:34:01 [notice] 1#1: start worker process 40
+deepscan-frontend    | 172.18.0.1 - - [06/Apr/2026:14:38:25 +0000] "GET / HTTP/1.1" 200 401 "https://nk034fkq-3000.inc1.devtunnels.ms/" "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Mobile Safari/537.36" "157.49.76.96"

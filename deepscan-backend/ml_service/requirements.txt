@@ -1,4 +1,5 @@
-﻿tensorflow
+tensorflow
 opencv-python
 flask
 werkzeug
+h5py

@@ -1,0 +1,43 @@
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491491.463753       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491491.464127       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | I0000 00:00:1775491491.535629       1 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+deepscan-ml-service  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491493.350318       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491493.350783       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | E0000 00:00:1775491493.642267       1 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+deepscan-ml-service  | Loading image weights: /app/trained_models/image_prediction_model/model_cp (1).h5
+deepscan-ml-service  | Error reconstructing image model: Layer count mismatch when loading weights from file. Model expected 243 layers, found 244 saved layers.
+deepscan-ml-service  | Loading video model: /app/trained_models/video_prediction_model/best_model.keras
+deepscan-ml-service  | 🚀 Starting Flask ML API on port 5001...
+deepscan-ml-service  |  * Serving Flask app 'app'
+deepscan-ml-service  |  * Debug mode: off
+deepscan-ml-service  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+deepscan-ml-service  |  * Running on all addresses (0.0.0.0)
+deepscan-ml-service  |  * Running on http://127.0.0.1:5001
+deepscan-ml-service  |  * Running on http://172.18.0.3:5001
+deepscan-ml-service  | [33mPress CTRL+C to quit[0m
+deepscan-ml-service  | 172.18.0.1 - - [06/Apr/2026 16:05:04] "[31m[1mGET /predict-image HTTP/1.1[0m" 405 -
+deepscan-ml-service  | 172.18.0.1 - - [06/Apr/2026 16:05:04] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+deepscan-ml-service  | 172.18.0.4 - - [06/Apr/2026 16:05:22] "POST /predict-image HTTP/1.1" 200 -
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491535.190305       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491535.190864       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | I0000 00:00:1775491535.250287       1 cpu_feature_guard.cc:227] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+deepscan-ml-service  | To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+deepscan-ml-service  | WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+deepscan-ml-service  | I0000 00:00:1775491536.456018       1 port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+deepscan-ml-service  | I0000 00:00:1775491536.456520       1 cudart_stub.cc:31] Could not find cuda drivers on your machine, GPU will not be used.
+deepscan-ml-service  | E0000 00:00:1775491536.725930       1 cuda_platform.cc:52] failed call to cuInit: INTERNAL: CUDA error: Failed call to cuInit: UNKNOWN ERROR (303)
+deepscan-ml-service  | Loading image weights: /app/trained_models/image_prediction_model/model_cp (1).h5
+deepscan-ml-service  | Error reconstructing image model: Layer count mismatch when loading weights from file. Model expected 243 layers, found 244 saved layers.
+deepscan-ml-service  | Loading video model: /app/trained_models/video_prediction_model/best_model.keras
+deepscan-ml-service  | 🚀 Starting Flask ML API on port 5001...
+deepscan-ml-service  |  * Serving Flask app 'app'
+deepscan-ml-service  |  * Debug mode: off
+deepscan-ml-service  | [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+deepscan-ml-service  |  * Running on all addresses (0.0.0.0)
+deepscan-ml-service  |  * Running on http://127.0.0.1:5001
+deepscan-ml-service  |  * Running on http://172.18.0.3:5001
+deepscan-ml-service  | [33mPress CTRL+C to quit[0m

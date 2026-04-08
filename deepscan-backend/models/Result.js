@@ -27,7 +27,6 @@ const ResultSchema = new mongoose.Schema(
     },
     breakdown: {
       model_score: Number,
-      artifact_score: Number,
       metadata_score: Number
     },
     flags: [String],
