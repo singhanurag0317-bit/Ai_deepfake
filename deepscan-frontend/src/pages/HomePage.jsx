@@ -106,7 +106,7 @@ export default function HomePage({ isAuthed }) {
            <h2 className="section-title">Engine <span>Capabilities</span></h2>
         </div>
         <div className="landing__mini">
-          <FeatureCardComponent index={0} title="Neural Scan" subtitle="427-layer DenseNet artifact detection" />
+          <FeatureCardComponent index={0} title="Neural Scan" subtitle="DenseNet-121 core architecture for artifact detection" />
           <FeatureCardComponent index={1} title="EXIF Entropy" subtitle="Metadata signal verification & hash check" />
           <FeatureCardComponent index={2} title="Verdict CLI" subtitle="Real-time binary classification API" />
         </div>

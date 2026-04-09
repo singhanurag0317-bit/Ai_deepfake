@@ -48,7 +48,6 @@ function App() {
     <div className="app">
       <div className="texture-overlay" />
       <DevBackground />
-      <div style={{ position: 'fixed', top: 5, right: 5, zIndex: 9999, fontSize: '0.6rem', color: 'var(--red)', background: 'black', padding: '2px 6px', borderRadius: '4px', border: '1px solid var(--red)', pointerEvents: 'none' }}>V2.0.1_CURATED</div>
       <Navbar {...navbarProps} />
       <main className="app__content">
         <Routes>

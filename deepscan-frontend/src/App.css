@@ -111,25 +111,36 @@ body {
 }
 
 .navbar__inner {
-  max-width: 1200px; margin: 0 auto; width: 100%;
-  padding: 0 24px;
+  max-width: 1440px; margin: 0 auto; width: 100%;
+  padding: 0 40px;
   display: flex; justify-content: space-between; align-items: center;
 }
 
-.navbar__logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.navbar__logo { 
+  display: flex; 
+  align-items: center; 
+  gap: 14px; 
+  text-decoration: none; 
+}
 
-.navbar__logo-diamond {
-  width: 22px; height: 22px;
-  background: var(--grad-fire);
+.navbar__logo-img {
+  height: 38px !important;
+  width: auto;
   border-radius: 6px;
-  transform: rotate(45deg);
-  box-shadow: 0 0 16px rgba(217, 200, 169, 0.5);
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+.navbar__logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.1;
 }
 
 .navbar__logo-text {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.35rem;
+  font-weight: 800;
   letter-spacing: -0.02em;
   background: var(--grad-text);
   background-clip: text;
@@ -140,14 +151,15 @@ body {
 .navbar__logo-subtitle {
   font-family: 'JetBrains Mono', monospace;
   color: var(--muted);
-  font-size: 0.6rem;
-  font-weight: 500;
+  font-size: 0.65rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.6;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+  margin-top: 1px;
 }
 
-.navbar__right { display:flex; align-items:center; gap:16px; }
+.navbar__right { display:flex; align-items:center; gap:24px; }
 
 .navbar__link {
   color: var(--muted);
@@ -205,10 +217,10 @@ body {
 /* ===== MAIN CONTENT ===== */
 .app__content {
   flex: 1;
-  max-width: 1140px;
+  max-width: 1440px;
   margin: 0 auto;
   width: 100%;
-  padding: 36px 24px 80px;
+  padding: 36px 40px 80px;
   transform-style: preserve-3d;
 }
 

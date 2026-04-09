@@ -35,7 +35,7 @@ export default function CheckerPage() {
                 <span className="checker-sidebar__chip">🧠</span>
                 <div>
                   <strong>Neural Scan</strong>
-                  <p>427-layer core architecture for pixel-level check</p>
+                  <p>DenseNet-121 core architecture for pixel-level check</p>
                 </div>
               </li>
               <li>
@@ -77,8 +77,8 @@ export default function CheckerPage() {
               <span className="checker-sidebar__stat-lbl">Dataset</span>
             </div>
             <div className="checker-sidebar__stat">
-              <span className="checker-sidebar__stat-val">427</span>
-              <span className="checker-sidebar__stat-lbl">Layers</span>
+              <span className="checker-sidebar__stat-val">Core</span>
+              <span className="checker-sidebar__stat-lbl">DenseNet-121</span>
             </div>
             <div className="checker-sidebar__stat">
               <span className="checker-sidebar__stat-val">&lt;2s</span>

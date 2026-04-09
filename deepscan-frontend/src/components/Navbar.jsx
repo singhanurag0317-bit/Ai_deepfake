@@ -6,9 +6,11 @@ export default function Navbar({ isAuthed, userEmail, onAuthNavigate, onLogout, 
     <header className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__logo">
-          <span className="navbar__logo-diamond" aria-hidden="true" />
-          <span className="navbar__logo-text">Deepfake</span>
-          <span className="navbar__logo-subtitle">Research Vault</span>
+          <img src="/logo.png" alt="Deepfake Logo" className="navbar__logo-img" />
+          <div className="navbar__logo-wrapper">
+            <span className="navbar__logo-text">Deepfake</span>
+            <span className="navbar__logo-subtitle">Research Vault</span>
+          </div>
         </Link>
 
         <nav className="navbar__right">
