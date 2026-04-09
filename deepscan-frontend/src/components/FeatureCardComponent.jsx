@@ -51,12 +51,13 @@ export default function FeatureCardComponent({ title, subtitle, index }) {
       <div
         className="feature-card-interactive"
         style={{
-          transform: `perspective(1000px) rotateX(${rotation.x * 0.2}deg) rotateY(${rotation.y * 0.2}deg) scale(${
-            rotation.x !== 0 || rotation.y !== 0 ? 1.02 : 1
+          transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) scale(${
+            rotation.x !== 0 || rotation.y !== 0 ? 1.05 : 1
           })`,
+          transformStyle: 'preserve-3d'
         }}
       >
-        <div className="feature-card__content">
+        <div className="feature-card__content" style={{ transform: 'translateZ(40px)' }}>
           <div className="feature-card__title">{title}</div>
           <div className="feature-card__subtitle">{subtitle}</div>
         </div>

@@ -78,18 +78,18 @@ export default function DevBackground() {
         
         if (this.isSymbol) {
           ctx.font = '700 11px "JetBrains Mono", monospace';
-          ctx.fillStyle = `rgba(167, 139, 250, ${baseOpacity * 1.5})`; // Primary Light
+          ctx.fillStyle = `rgba(16, 185, 129, ${baseOpacity * 1.5})`; // Emerald
           ctx.fillText(this.symbol, this.x, this.y);
         } else {
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(6, 182, 212, ${baseOpacity})`; // Cyan
+          ctx.fillStyle = `rgba(217, 200, 169, ${baseOpacity})`; // Gold
           ctx.fill();
           
           // Small glow for nodes
           if (baseOpacity > 0.3) {
             ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(6, 182, 212, 0.5)';
+            ctx.shadowColor = 'rgba(217, 200, 169, 0.5)';
             ctx.fill();
             ctx.shadowBlur = 0;
           }
@@ -126,8 +126,8 @@ export default function DevBackground() {
             
             // Gradient connection with more contrast
             const grad = ctx.createLinearGradient(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y);
-            grad.addColorStop(0, `rgba(124, 58, 237, ${alpha})`); // Purple
-            grad.addColorStop(1, `rgba(6, 182, 212, ${alpha})`); // Cyan
+            grad.addColorStop(0, `rgba(16, 185, 129, ${alpha})`); // Emerald
+            grad.addColorStop(1, `rgba(217, 200, 169, ${alpha})`); // Gold
             
             ctx.strokeStyle = grad;
             ctx.stroke();

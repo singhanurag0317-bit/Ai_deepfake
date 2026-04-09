@@ -26,8 +26,8 @@ export default function CanvasParticles() {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
 
-    // Gen-Z color palette: purple, violet, cyan, indigo
-    const colors = ['#7c3aed', '#a78bfa', '#06b6d4', '#38bdf8', '#818cf8', '#6366f1'];
+    // Forest Luxe palette
+    const colors = ['#0A1C1A', '#D9C8A9', '#10B981', '#0E2623', '#7A8C8A'];
 
     class Particle {
       constructor() {

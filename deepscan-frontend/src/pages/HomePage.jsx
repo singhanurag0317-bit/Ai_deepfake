@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ScannerVisual from '../components/ScannerVisual';
 import FeatureCardComponent from '../components/FeatureCardComponent';
@@ -9,6 +9,7 @@ import '../components/ScannerVisual.css';
 export default function HomePage({ isAuthed }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (location.state?.scrollToAnalyzer) {
@@ -27,11 +28,23 @@ export default function HomePage({ isAuthed }) {
     navigate('/checker');
   };
 
+  const handleMouseMove = (e) => {
+    const x = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+    const y = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    setParallax({ x, y });
+  };
+
   return (
-    <div className="home-v2">
+    <div className="home-v2" onMouseMove={handleMouseMove}>
       <section className="landing">
-        <div className="landing__hero custom-layout">
-          <div className="landing__left">
+        <div className="landing__hero custom-layout" style={{ transformStyle: 'preserve-3d' }}>
+          <div 
+            className="landing__left"
+            style={{ 
+              transform: `translate3d(${parallax.x * -15}px, ${parallax.y * -15}px, 0)`,
+              transition: 'transform 0.1s ease-out'
+            }}
+          >
             <div className="kicker-tag" style={{ fontFamily: "'JetBrains Mono', monospace", opacity: 0.8 }}>
               <span className="dot" style={{ background: 'var(--cyan)', boxShadow: '0 0 10px var(--cyan)' }}></span>
               $ npm install authenticity --save
@@ -74,7 +87,14 @@ export default function HomePage({ isAuthed }) {
             </div>
           </div>
 
-          <div className="landing__right visual-container">
+          <div 
+            className="landing__right visual-container"
+            style={{ 
+              transform: `translate3d(${parallax.x * 25}px, ${parallax.y * 25}px, 50px) rotateY(${parallax.x * 5}deg)`,
+              transition: 'transform 0.1s ease-out',
+              transformStyle: 'preserve-3d'
+            }}
+          >
             <ScannerVisual />
           </div>
         </div>

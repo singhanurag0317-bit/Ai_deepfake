@@ -46,6 +46,7 @@ function App() {
 
   return (
     <div className="app">
+      <div className="texture-overlay" />
       <DevBackground />
       <Navbar {...navbarProps} />
       <main className="app__content">

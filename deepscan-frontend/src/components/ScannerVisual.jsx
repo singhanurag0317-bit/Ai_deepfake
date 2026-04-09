@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function ScannerVisual() {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateX = ((y - rect.height / 2) / rect.height) * -8;
+    const rotateY = ((x - rect.width / 2) / rect.width) * 8;
+    setRotation({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseLeave = () => setRotation({ x: 0, y: 0 });
+
   return (
-    <div className="scanner-vault">
+    <div 
+      className="scanner-vault"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+        transition: 'transform 0.1s ease-out'
+      }}
+    >
       {/* Top smaller panel */}
       <div className="scanner-vault__top-panel">
         <div className="scanner-vault__header-bar">
