@@ -93,7 +93,8 @@ router.post('/analyze-video', uploadVideo.single('video'), async (req, res) => {
       throw new Error('Invalid video model score returned by ML service');
     }
 
-    const verdict = modelScore >= 50 ? 'SYNTHETIC' : 'REAL';
+    const prediction = mlResult.prediction || labelFromScore(modelScore);
+    const verdict = prediction === 'deepfake' ? 'SYNTHETIC' : 'REAL';
     const confidenceBand = modelScore >= 80 ? 'High' : modelScore >= 60 ? 'Medium' : 'Low';
 
     const savedResult = await Result.create({
@@ -117,6 +118,7 @@ router.post('/analyze-video', uploadVideo.single('video'), async (req, res) => {
 
     return res.status(200).json({
       message: 'Video analysis complete',
+      prediction,
       id: savedResult._id,
       filename: req.file.filename,
       originalName: req.file.originalname,
@@ -131,6 +133,9 @@ router.post('/analyze-video', uploadVideo.single('video'), async (req, res) => {
       raw_metadata: null,
       analyzed_at: savedResult.analyzed_at,
       frames_analyzed: mlResult.frames_analyzed || 0,
+      sampled_second: Number.isFinite(mlResult.sampled_second) ? mlResult.sampled_second : null,
+      sampled_frame_index: Number.isFinite(mlResult.sampled_frame_index) ? mlResult.sampled_frame_index : null,
+      image_model_test: mlResult.image_model_test || null,
     });
   } catch (err) {
     fs.unlink(filePath).catch(() => {});

@@ -7,3 +7,4 @@ docker-compose.override.yml
 
 # Local evaluation dataset
 Human Faces Dataset/
+video dataset/

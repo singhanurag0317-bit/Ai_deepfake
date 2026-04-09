@@ -38,7 +38,10 @@ _VIDEO_SUBDIR = "video_prediction_model"
 _VIDEO_FILE = os.environ.get("DEEPSCAN_VIDEO_MODEL_FILE", "best_model.keras")
 VIDEO_MODEL_PATH = os.path.join(TRAINED_MODELS_DIR, _VIDEO_SUBDIR, _VIDEO_FILE)
 IMAGE_SIZE = (64, 64)
-VIDEO_SAMPLE_FRAMES = 15
+VIDEO_SAMPLE_SECOND = float(os.environ.get("DEEPSCAN_VIDEO_SAMPLE_SECOND", "3.0"))
+POSITIVE_CLASS = os.environ.get("DEEPSCAN_VIDEO_POSITIVE_CLASS", "real").strip().lower()
+DEEPFAKE_THRESHOLD = float(os.environ.get("DEEPSCAN_VIDEO_DEEPFAKE_THRESHOLD", "0.5"))
+VIDEO_INPUT_RAW_UINT8 = os.environ.get("DEEPSCAN_VIDEO_INPUT_RAW_UINT8", "true").strip().lower() in ("1", "true", "yes", "on")
 
 # ─── Load model at module level (sync, before FastAPI starts) ────────────────
 video_model = None
@@ -65,50 +68,79 @@ app.add_middleware(
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
-def extract_frames(video_path: str, num_frames: int = VIDEO_SAMPLE_FRAMES) -> list[np.ndarray]:
+def extract_frame_at_second(video_path: str, target_second: float = VIDEO_SAMPLE_SECOND) -> tuple[np.ndarray, int, float]:
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise ValueError(f"Cannot open video: {video_path}")
+
+    fps = float(cap.get(cv2.CAP_PROP_FPS))
+    if fps <= 0:
+        fps = 30.0
 
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     if total_frames <= 0:
         raise ValueError("Video has no frames")
 
-    indices = np.linspace(0, total_frames - 1, num=min(num_frames, total_frames), dtype=int)
+    frame_index = int(max(0.0, target_second) * fps)
+    frame_index = min(frame_index, total_frames - 1)
 
-    frames = []
-    for idx in indices:
-        cap.set(cv2.CAP_PROP_POS_FRAMES, int(idx))
+    cap.set(cv2.CAP_PROP_POS_FRAMES, frame_index)
+    ret, frame = cap.read()
+    if not ret:
+        fallback_index = total_frames // 2
+        cap.set(cv2.CAP_PROP_POS_FRAMES, fallback_index)
         ret, frame = cap.read()
-        if not ret:
-            continue
-        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        frame_resized = cv2.resize(frame_rgb, IMAGE_SIZE)
-        frames.append(frame_resized.astype(np.float32) / 255.0)
+        frame_index = fallback_index
 
     cap.release()
-    return frames
+    if not ret:
+        raise ValueError("Could not extract frame from video")
+
+    frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    frame_resized = cv2.resize(frame_rgb, IMAGE_SIZE)
+    if VIDEO_INPUT_RAW_UINT8:
+        # Model contains a CastToFloat32-compatible input layer and may include
+        # its own normalization. Keep raw uint8 pixels to match training input.
+        model_input = frame_resized.astype(np.uint8)
+    else:
+        model_input = frame_resized.astype(np.float32) / 255.0
+    return model_input, frame_index, fps
 
 
 def interpret_prediction(raw_output: np.ndarray) -> dict:
-    """Map model output to fake probability [0,1]. Handles logits or probabilities."""
+    """Map model output to calibrated deepfake probability and label."""
     raw = np.asarray(raw_output).flatten().astype(np.float64)
     n = raw.size
     if n == 1:
         v = float(raw[0])
         if 0.0 <= v <= 1.0:
-            fake_prob = v
+            positive_prob = v
         else:
-            fake_prob = float(1.0 / (1.0 + np.exp(-np.clip(v, -40.0, 40.0))))
+            positive_prob = float(1.0 / (1.0 + np.exp(-np.clip(v, -40.0, 40.0))))
     elif n == 2:
         e = np.exp(raw - np.max(raw))
         p = e / np.sum(e)
-        fake_prob = float(p[1])
+        positive_prob = float(p[1])
     else:
         e = np.exp(raw - np.max(raw))
         p = e / np.sum(e)
-        fake_prob = float(np.max(p))
-    return {"score": round(fake_prob * 100, 2), "raw": raw.tolist()}
+        positive_prob = float(np.max(p))
+
+    if POSITIVE_CLASS not in ("real", "deepfake"):
+        raise ValueError("DEEPSCAN_VIDEO_POSITIVE_CLASS must be either 'real' or 'deepfake'")
+
+    deepfake_prob = positive_prob if POSITIVE_CLASS == "deepfake" else (1.0 - positive_prob)
+    deepfake_prob = float(np.clip(deepfake_prob, 0.0, 1.0))
+    prediction = "deepfake" if deepfake_prob >= DEEPFAKE_THRESHOLD else "real"
+    confidence = deepfake_prob if prediction == "deepfake" else (1.0 - deepfake_prob)
+
+    return {
+        "score": round(deepfake_prob * 100, 2),
+        "prediction": prediction,
+        "confidence": round(float(confidence), 6),
+        "deepfake_probability": round(float(deepfake_prob), 6),
+        "raw": raw.tolist(),
+    }
 
 
 # ─── Endpoints ───────────────────────────────────────────────────────────────
@@ -130,24 +162,26 @@ async def predict_video(file: UploadFile = File(...)):
         tmp.write(contents)
         tmp.close()
 
-        frames = extract_frames(tmp.name)
-        if not frames:
-            raise HTTPException(status_code=400, detail="Could not extract frames from video")
+        frame, frame_index, fps = extract_frame_at_second(tmp.name)
+        tensor = np.expand_dims(frame, axis=0)
+        prediction = video_model.predict(tensor, verbose=0)
+        result = interpret_prediction(prediction)
 
-        frame_scores = []
-        for frame in frames:
-            tensor = np.expand_dims(frame, axis=0)
-            prediction = video_model.predict(tensor, verbose=0)
-            result = interpret_prediction(prediction)
-            frame_scores.append(result["score"])
-
-        avg_score = round(float(np.mean(frame_scores)), 2)
+        avg_score = result["score"]
+        avg_deepfake_prob = float(np.clip(result["deepfake_probability"], 0.0, 1.0))
+        label = result["prediction"]
+        confidence = result["confidence"]
 
         return {
             "model_score": avg_score,
+            "prediction": label,
+            "confidence": round(float(confidence), 6),
+            "deepfake_probability": round(avg_deepfake_prob, 6),
             "status": "success",
-            "frame_scores": frame_scores,
-            "frames_analyzed": len(frame_scores),
+            "frame_scores": [avg_score],
+            "frames_analyzed": 1,
+            "sampled_second": float(round(frame_index / fps, 3)),
+            "sampled_frame_index": int(frame_index),
         }
     except HTTPException:
         raise

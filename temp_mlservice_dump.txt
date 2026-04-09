@@ -1,0 +1,154 @@
+const axios = require('axios');
+const fs = require('fs');
+const FormData = require('form-data');
+const path = require('path');
+
+// ─── Config ────────────────────────────────────────────────────────────────
+const IMAGE_SERVER_URL = process.env.IMAGE_SERVER_URL || 'http://127.0.0.1:7000';
+const VIDEO_SERVER_URL = process.env.VIDEO_SERVER_URL || 'http://127.0.0.1:5500';
+
+function parseTimeoutMs(value, fallback) {
+  const n = Number.parseInt(String(value ?? ''), 10);
+  return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+// First TF inference on CPU often exceeds 60s; defaults are generous but override via .env.
+const IMAGE_PREDICT_TIMEOUT_MS = parseTimeoutMs(process.env.ML_IMAGE_TIMEOUT_MS, 180000);
+const VIDEO_PREDICT_TIMEOUT_MS = parseTimeoutMs(process.env.ML_VIDEO_TIMEOUT_MS, 300000);
+
+// ─── Image MIME types ──────────────────────────────────────────────────────
+const IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp'];
+const VIDEO_MIMES = ['video/mp4', 'video/webm', 'video/avi', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska'];
+
+/**
+ * Determine the file type from mime type or extension.
+ * Returns 'image' | 'video'
+ */
+const detectMediaType = (filePath, mimeType) => {
+  if (mimeType) {
+    if (IMAGE_MIMES.includes(mimeType)) return 'image';
+    if (VIDEO_MIMES.includes(mimeType)) return 'video';
+  }
+
+  // Fallback: check file extension
+  const ext = path.extname(filePath).toLowerCase();
+  const imageExts = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.bmp'];
+  const videoExts = ['.mp4', '.webm', '.avi', '.mov', '.mkv'];
+
+  if (imageExts.includes(ext)) return 'image';
+  if (videoExts.includes(ext)) return 'video';
+
+  // Default to image for backward compatibility
+  return 'image';
+};
+
+// ─── Core ML Analysis via Python Inference Server ─────────────────────────
+
+/**
+ * Run ML model prediction for an image.
+ * Calls the Python Flask inference server's /predict/image endpoint.
+ */
+const runImageModel = async (filePath) => {
+  try {
+    const form = new FormData();
+    form.append('file', fs.createReadStream(filePath));
+
+    const response = await axios.post(
+      `${IMAGE_SERVER_URL}/predict/image`,
+      form,
+      {
+        headers: form.getHeaders(),
+        timeout: IMAGE_PREDICT_TIMEOUT_MS,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      }
+    );
+
+    const { model_score, status } = response.data;
+    const ms = Number(model_score);
+
+    return {
+      model_score: Number.isFinite(ms) ? Number(ms.toFixed(2)) : 50,
+      artifact_score: null,
+      status: status || 'success',
+      media_type: 'image',
+    };
+  } catch (err) {
+    console.error('❌ Image ML Service Error:', err.message);
+    if (err.response) {
+      console.error('   Server response:', err.response.data);
+    }
+    return {
+      model_score: 50,
+      artifact_score: 50,
+      status: 'error',
+      media_type: 'image',
+      error: err.message
+    };
+  }
+};
+
+/**
+ * Run ML model prediction for a video.
+ * Calls the Python Flask inference server's /predict/video endpoint.
+ */
+const runVideoModel = async (filePath) => {
+  try {
+    const form = new FormData();
+    form.append('file', fs.createReadStream(filePath));
+
+    const response = await axios.post(
+      `${VIDEO_SERVER_URL}/predict/video`,
+      form,
+      {
+        headers: form.getHeaders(),
+        timeout: VIDEO_PREDICT_TIMEOUT_MS,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      }
+    );
+
+    const { model_score, status, frames_analyzed } = response.data;
+    const ms = Number(model_score);
+
+    return {
+      model_score: Number.isFinite(ms) ? Number(ms.toFixed(2)) : 50,
+      artifact_score: null,
+      status: status || 'success',
+      media_type: 'video',
+      frames_analyzed: frames_analyzed || 0,
+    };
+  } catch (err) {
+    console.error('❌ Video ML Service Error:', err.message);
+    if (err.response) {
+      console.error('   Server response:', err.response.data);
+    }
+    return {
+      model_score: 50,
+      artifact_score: null,
+      status: 'error',
+      media_type: 'video',
+      error: err.message
+    };
+  }
+};
+
+// ─── Public API ───────────────────────────────────────────────────────────
+
+/**
+ * Main entry point — detects media type and runs the appropriate model.
+ * @param {string} filePath – path to the uploaded file
+ * @param {string} [mimeType] – optional MIME type for more reliable detection
+ */
+const runMLModel = async (filePath, mimeType) => {
+  const mediaType = detectMediaType(filePath, mimeType);
+  console.log(`🧠 Running ${mediaType} prediction model for: ${path.basename(filePath)}`);
+
+  if (mediaType === 'video') {
+    return runVideoModel(filePath);
+  }
+  return runImageModel(filePath);
+};
+
+module.exports = { runMLModel, detectMediaType };
+

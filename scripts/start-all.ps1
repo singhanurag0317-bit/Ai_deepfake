@@ -5,6 +5,13 @@ $ml = Join-Path $root "deepscan-backend\ml_server"
 $be = Join-Path $root "deepscan-backend"
 $fe = Join-Path $root "deepscan-frontend"
 
+# Keep image threshold unchanged; set dedicated video-as-image calibration defaults.
+if (-not $env:DEEPSCAN_VIDEO_SAMPLE_SECOND) { $env:DEEPSCAN_VIDEO_SAMPLE_SECOND = "3.0" }
+if (-not $env:DEEPSCAN_VIDEO_AS_IMAGE_POSITIVE_CLASS) { $env:DEEPSCAN_VIDEO_AS_IMAGE_POSITIVE_CLASS = "real" }
+if (-not $env:DEEPSCAN_VIDEO_AS_IMAGE_DEEPFAKE_THRESHOLD) { $env:DEEPSCAN_VIDEO_AS_IMAGE_DEEPFAKE_THRESHOLD = "0.016" }
+if (-not $env:DEEPSCAN_VIDEO_AS_IMAGE_NUM_SAMPLES) { $env:DEEPSCAN_VIDEO_AS_IMAGE_NUM_SAMPLES = "8" }
+if (-not $env:DEEPSCAN_VIDEO_AS_IMAGE_DECISION_THRESHOLD) { $env:DEEPSCAN_VIDEO_AS_IMAGE_DECISION_THRESHOLD = "0.157" }
+
 Write-Host "Starting ML servers from $ml ..."
 Start-Process python -ArgumentList "image_server.py" -WorkingDirectory $ml -WindowStyle Minimized
 Start-Process python -ArgumentList "video_server.py" -WorkingDirectory $ml -WindowStyle Minimized

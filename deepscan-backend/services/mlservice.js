@@ -5,7 +5,6 @@ const path = require('path');
 
 // --- Config -----------------------------------------------------------------
 const IMAGE_SERVER_URL = process.env.IMAGE_SERVER_URL || 'http://127.0.0.1:7000';
-const VIDEO_SERVER_URL = process.env.VIDEO_SERVER_URL || 'http://127.0.0.1:5500';
 
 function parseTimeoutMs(value, fallback) {
   const n = Number.parseInt(String(value ?? ''), 10);
@@ -86,7 +85,7 @@ const runVideoModel = async (filePath) => {
 
   try {
     const response = await axios.post(
-      `${VIDEO_SERVER_URL}/predict/video`,
+      `${IMAGE_SERVER_URL}/predict/video-as-image`,
       form,
       {
         headers: form.getHeaders(),
@@ -96,17 +95,38 @@ const runVideoModel = async (filePath) => {
       }
     );
 
-    const { model_score, status, frames_analyzed } = response.data;
-    const ms = Number(model_score);
-    if (!Number.isFinite(ms)) {
-      throw new Error('Invalid video prediction response from model server');
+    const {
+      status,
+      frames_analyzed,
+      sampled_second,
+      sampled_frame_index,
+      prediction,
+      confidence,
+      deepfake_probability: deepfakeProbabilityRaw,
+    } = response.data;
+    const c = Number(confidence);
+    if (!['real', 'deepfake'].includes(prediction) || !Number.isFinite(c)) {
+      throw new Error('Invalid video-as-image prediction response from model server');
     }
 
+    const serverDeepfakeProb = Number(deepfakeProbabilityRaw);
+    const deepfakeProb = Number.isFinite(serverDeepfakeProb)
+      ? serverDeepfakeProb
+      : (prediction === 'deepfake' ? c : 1 - c);
+    const boundedDeepfakeProb = Math.min(1, Math.max(0, deepfakeProb));
+
     return {
-      model_score: Number(ms.toFixed(2)),
+      model_score: Number((boundedDeepfakeProb * 100).toFixed(2)),
+      prediction,
+      confidence: boundedDeepfakeProb,
+      prediction_confidence: c,
+      deepfake_probability: boundedDeepfakeProb,
       status: status || 'success',
       media_type: 'video',
-      frames_analyzed: frames_analyzed || 0,
+      frames_analyzed: frames_analyzed || 1,
+      sampled_second: Number(sampled_second),
+      sampled_frame_index: Number(sampled_frame_index),
+      calibration_source: 'image_model_video_as_image',
     };
   } catch (err) {
     console.error('Video ML Service Error:', err.message);

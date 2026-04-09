@@ -19,6 +19,7 @@ import numpy as np
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
+import cv2
 
 import torch
 import torch.nn as nn
@@ -61,6 +62,11 @@ POSITIVE_CLASS = os.environ.get("DEEPSCAN_IMAGE_POSITIVE_CLASS", "real").strip()
 # Calibrated on Human Faces Dataset (AI=4630, Real=5000):
 # best balanced-accuracy threshold is 0.07.
 DEEPFAKE_THRESHOLD = _env_float("DEEPSCAN_IMAGE_DEEPFAKE_THRESHOLD", 0.07)
+VIDEO_POSITIVE_CLASS = os.environ.get("DEEPSCAN_VIDEO_AS_IMAGE_POSITIVE_CLASS", POSITIVE_CLASS).strip().lower()
+VIDEO_DEEPFAKE_THRESHOLD = _env_float("DEEPSCAN_VIDEO_AS_IMAGE_DEEPFAKE_THRESHOLD", DEEPFAKE_THRESHOLD)
+VIDEO_NUM_SAMPLES = 8
+VIDEO_DECISION_THRESHOLD = _env_float("DEEPSCAN_VIDEO_AS_IMAGE_DECISION_THRESHOLD", 0.6)
+VIDEO_FACE_SIZE = (_env_int("DEEPSCAN_VIDEO_FACE_SIZE", 224), _env_int("DEEPSCAN_VIDEO_FACE_SIZE", 224))
 
 
 def _pick_image_model_path() -> str:
@@ -166,6 +172,12 @@ try:
         f"positive_class={POSITIVE_CLASS}, deepfake_threshold={DEEPFAKE_THRESHOLD}, "
         f"imagenet_norm={USE_IMAGENET_NORM}"
     )
+    print(
+        "[VideoAsImage] Calibration: "
+        f"positive_class={VIDEO_POSITIVE_CLASS}, deepfake_threshold={VIDEO_DEEPFAKE_THRESHOLD}, "
+        f"samples={VIDEO_NUM_SAMPLES}, decision_threshold={VIDEO_DECISION_THRESHOLD}, "
+        f"face_size={VIDEO_FACE_SIZE[0]}"
+    )
 except Exception as exc:
     print(f"[ImageModel] Failed to load model: {exc}")
     traceback.print_exc()
@@ -181,9 +193,8 @@ app.add_middleware(
 
 # ─── Helpers ─────────────────────────────────────────────────────────────────
 
-def preprocess_image(image_path: str) -> np.ndarray:
-    img = Image.open(image_path).convert("RGB").resize(IMAGE_SIZE)
-    arr = np.array(img, dtype=np.float32) / 255.0
+def preprocess_rgb_array(arr_rgb: np.ndarray) -> np.ndarray:
+    arr = arr_rgb.astype(np.float32) / 255.0
 
     # Xception backbones are typically trained with ImageNet normalization.
     if USE_IMAGENET_NORM:
@@ -195,6 +206,107 @@ def preprocess_image(image_path: str) -> np.ndarray:
     return np.expand_dims(arr, axis=0)
 
 
+def preprocess_image(image_path: str) -> np.ndarray:
+    img = Image.open(image_path).convert("RGB").resize(IMAGE_SIZE)
+    arr_rgb = np.array(img, dtype=np.float32)
+    return preprocess_rgb_array(arr_rgb)
+
+
+def _load_face_detector() -> cv2.CascadeClassifier:
+    cascade_path = os.path.join(cv2.data.haarcascades, "haarcascade_frontalface_default.xml")
+    detector = cv2.CascadeClassifier(cascade_path)
+    if detector.empty():
+        raise RuntimeError(f"Could not load face detector at: {cascade_path}")
+    return detector
+
+
+FACE_DETECTOR = _load_face_detector()
+
+
+def _uniform_sample_indices(total_frames: int, fps: float, sample_count: int) -> tuple[list[int], float]:
+    if total_frames <= 0:
+        raise RuntimeError("Video has no frames")
+
+    duration_seconds = float(total_frames / max(fps, 1e-6))
+    n = max(1, int(sample_count))
+
+    # Uniform timestamps: t_i = (i * T) / (N + 1), for i = 1..N
+    timestamps = [(i * duration_seconds) / (n + 1) for i in range(1, n + 1)]
+    indices: list[int] = []
+    for ts in timestamps:
+        idx = int(round(ts * fps))
+        idx = max(0, min(total_frames - 1, idx))
+        indices.append(idx)
+
+    if not indices:
+        indices = [total_frames // 2]
+    return indices, duration_seconds
+
+
+def _extract_face_or_full_frame(frame_bgr: np.ndarray) -> np.ndarray:
+    gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)
+    faces = FACE_DETECTOR.detectMultiScale(
+        gray,
+        scaleFactor=1.1,
+        minNeighbors=5,
+        minSize=(30, 30),
+    )
+
+    if len(faces) == 0:
+        roi = frame_bgr
+    else:
+        x, y, w, h = max(faces, key=lambda r: int(r[2]) * int(r[3]))
+        roi = frame_bgr[y : y + h, x : x + w]
+
+    if roi.size == 0:
+        roi = frame_bgr
+
+    roi_rgb = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
+    return cv2.resize(roi_rgb, VIDEO_FACE_SIZE)
+
+
+def preprocess_video_frames_around_second(
+    video_path: str,
+    sample_count: int = VIDEO_NUM_SAMPLES,
+) -> tuple[list[np.ndarray], list[int], float, float]:
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        raise RuntimeError(f"Cannot open video: {video_path}")
+
+    fps = float(cap.get(cv2.CAP_PROP_FPS))
+    if fps <= 0:
+        fps = 30.0
+
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    if total_frames <= 0:
+        cap.release()
+        raise RuntimeError("Video has no frames")
+
+    indices, duration_seconds = _uniform_sample_indices(
+        total_frames=total_frames,
+        fps=fps,
+        sample_count=max(1, int(sample_count)),
+    )
+
+    tensors: list[np.ndarray] = []
+    used_indices: list[int] = []
+    for idx in indices:
+        cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
+        ret, frame = cap.read()
+        if not ret:
+            continue
+        frame_rgb = _extract_face_or_full_frame(frame)
+        tensors.append(preprocess_rgb_array(frame_rgb))
+        used_indices.append(int(idx))
+
+    cap.release()
+
+    if not tensors:
+        raise RuntimeError("Could not extract frames from video")
+
+    return tensors, used_indices, fps, duration_seconds
+
+
 def run_image_inference(tensor: np.ndarray) -> np.ndarray:
     with torch.no_grad():
         t = torch.from_numpy(tensor).to(dtype=torch.float32)
@@ -202,40 +314,49 @@ def run_image_inference(tensor: np.ndarray) -> np.ndarray:
         return pred.detach().cpu().numpy()
 
 
-def interpret_prediction(raw_output: np.ndarray) -> tuple[str, float, float]:
-    """
-    Convert model output into:
-        prediction ('real'|'deepfake')
-        predicted-class confidence [0,1]
-        deepfake probability [0,1]
-    """
+def _positive_probability(raw_output: np.ndarray) -> float:
     raw = np.asarray(raw_output).flatten().astype(np.float64)
     n = raw.size
 
     if n == 1:
         v = float(raw[0])
         if 0.0 <= v <= 1.0:
-            positive_prob = v
-        else:
-            positive_prob = float(1.0 / (1.0 + np.exp(-np.clip(v, -40.0, 40.0))))
-    elif n == 2:
+            return v
+        return float(1.0 / (1.0 + np.exp(-np.clip(v, -40.0, 40.0))))
+
+    if n == 2:
         e = np.exp(raw - np.max(raw))
         p = e / np.sum(e)
-        positive_prob = float(p[1])
-    else:
-        e = np.exp(raw - np.max(raw))
-        p = e / np.sum(e)
-        positive_prob = float(np.max(p))
+        return float(p[1])
 
-    if POSITIVE_CLASS not in ("real", "deepfake"):
-        raise RuntimeError(
-            "DEEPSCAN_IMAGE_POSITIVE_CLASS must be either 'real' or 'deepfake'"
-        )
+    e = np.exp(raw - np.max(raw))
+    p = e / np.sum(e)
+    return float(np.max(p))
 
-    deepfake_prob = positive_prob if POSITIVE_CLASS == "deepfake" else (1.0 - positive_prob)
-    deepfake_prob = float(np.clip(deepfake_prob, 0.0, 1.0))
 
-    prediction = "deepfake" if deepfake_prob >= DEEPFAKE_THRESHOLD else "real"
+def deepfake_probability(raw_output: np.ndarray, positive_class: str = POSITIVE_CLASS) -> float:
+    if positive_class not in ("real", "deepfake"):
+        raise RuntimeError("positive_class must be either 'real' or 'deepfake'")
+
+    positive_prob = _positive_probability(raw_output)
+    deepfake_prob = positive_prob if positive_class == "deepfake" else (1.0 - positive_prob)
+    return float(np.clip(deepfake_prob, 0.0, 1.0))
+
+
+def interpret_prediction(
+    raw_output: np.ndarray,
+    threshold: float = DEEPFAKE_THRESHOLD,
+    positive_class: str = POSITIVE_CLASS,
+) -> tuple[str, float, float]:
+    """
+    Convert model output into:
+        prediction ('real'|'deepfake')
+        predicted-class confidence [0,1]
+        deepfake probability [0,1]
+    """
+    deepfake_prob = deepfake_probability(raw_output, positive_class=positive_class)
+
+    prediction = "deepfake" if deepfake_prob >= threshold else "real"
     confidence = deepfake_prob if prediction == "deepfake" else (1.0 - deepfake_prob)
     confidence = float(round(confidence, 6))
     return prediction, confidence, deepfake_prob
@@ -267,7 +388,11 @@ async def predict_image(file: UploadFile = File(...)):
 
         tensor = preprocess_image(tmp.name)
         prediction = run_image_inference(tensor)
-        label, confidence, deepfake_prob = interpret_prediction(prediction)
+        label, confidence, deepfake_prob = interpret_prediction(
+            prediction,
+            threshold=DEEPFAKE_THRESHOLD,
+            positive_class=POSITIVE_CLASS,
+        )
 
         print(
             f"[ImageModel] Prediction executed for {file.filename or 'upload'} | "
@@ -278,6 +403,66 @@ async def predict_image(file: UploadFile = File(...)):
             "prediction": label,
             "confidence": confidence,
             "deepfake_probability": float(round(deepfake_prob, 6)),
+        }
+    except Exception as exc:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(exc))
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
+
+
+@app.post("/predict/video-as-image")
+async def predict_video_as_image(file: UploadFile = File(...)):
+    if image_model is None:
+        raise HTTPException(status_code=503, detail="Image model not loaded")
+
+    suffix = os.path.splitext(file.filename or "upload.mp4")[1] or ".mp4"
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+    try:
+        contents = await file.read()
+        tmp.write(contents)
+        tmp.close()
+
+        tensors, frame_indices, fps, duration_seconds = preprocess_video_frames_around_second(
+            tmp.name,
+            sample_count=VIDEO_NUM_SAMPLES,
+        )
+
+        frame_deepfake_probs: list[float] = []
+        for tensor in tensors:
+            raw_output = run_image_inference(tensor)
+            frame_deepfake_probs.append(
+                deepfake_probability(raw_output, positive_class=VIDEO_POSITIVE_CLASS)
+            )
+
+        score_values = np.array(frame_deepfake_probs, dtype=np.float64)
+        deepfake_prob = float(np.mean(score_values))
+
+        # Fixed decision rule requested for multi-frame video-as-image mode.
+        decision_threshold = float(VIDEO_DECISION_THRESHOLD)
+        label = "deepfake" if deepfake_prob > decision_threshold else "real"
+        confidence = deepfake_prob if label == "deepfake" else (1.0 - deepfake_prob)
+        confidence = float(round(confidence, 6))
+
+        center_idx = frame_indices[len(frame_indices) // 2]
+
+        return {
+            "prediction": label,
+            "confidence": confidence,
+            "deepfake_probability": float(round(deepfake_prob, 6)),
+            "sampled_second": float(round(center_idx / fps, 3)),
+            "sampled_frame_index": int(center_idx),
+            "sampled_frame_indices": [int(i) for i in frame_indices],
+            "frames_analyzed": int(len(frame_indices)),
+            "mode": "video_as_image",
+            "video_duration_seconds": float(round(duration_seconds, 3)),
+            "calibration_threshold": float(VIDEO_DEEPFAKE_THRESHOLD),
+            "decision_threshold": float(round(decision_threshold, 6)),
+            "aggregation": "mean",
+            "frame_deepfake_probabilities": [float(round(v, 6)) for v in frame_deepfake_probs],
         }
     except Exception as exc:
         traceback.print_exc()
